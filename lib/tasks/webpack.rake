@@ -1,8 +1,10 @@
 namespace :webpack do
   desc "Compile webpack bundles"
   task compile: :environment do
-    ENV["TARGET"] = 'production' # TODO: Deprecated, use NODE_ENV instead
-    ENV["NODE_ENV"] = 'production'
+    raise 'webpack:compile should not be run in development' if Rails.env.development?
+    
+    ENV["TARGET"] = Rails.env # TODO: Deprecated, use NODE_ENV instead
+    ENV["NODE_ENV"] = Rails.env
     webpack_bin = ::Rails.root.join(::Rails.configuration.webpack.binary)
     config_file = ::Rails.root.join(::Rails.configuration.webpack.config_file)
 
